@@ -1,26 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { doc, writeBatch, collection } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { getDb } from "@/lib/firebase";
 
 const USER_ID = "user-123";
 
 function getTasksCollection() {
-  if (!db) {
-    throw new Error("Firestore is not initialized");
-  }
+  const db = getDb();
   return collection(db, "users", USER_ID, "tasks");
 }
 
 // POST - Update task order
 export async function POST(request: NextRequest) {
   try {
-    if (!db) {
-      return NextResponse.json(
-        { error: "Firestore is not initialized" },
-        { status: 500 }
-      );
-    }
-
     const body = await request.json();
     const { taskIds, orders } = body;
 
@@ -38,6 +29,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const db = getDb();
     const tasksCollection = getTasksCollection();
     const batch = writeBatch(db);
 
@@ -54,10 +46,14 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Error updating task order:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to update task order" },
+      {
+        error: "Failed to update task order",
+        details: errorMessage,
+      },
       { status: 500 }
     );
   }
 }
-

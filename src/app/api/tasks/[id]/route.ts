@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { deleteDoc, updateDoc, doc, collection } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { getDb } from "@/lib/firebase";
 import { TaskStatus } from "@/types/task";
 
 const USER_ID = "user-123";
 
 function getTasksCollection() {
-  if (!db) {
-    throw new Error("Firestore is not initialized");
-  }
+  const db = getDb();
   return collection(db, "users", USER_ID, "tasks");
 }
 
@@ -18,16 +16,12 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!db) {
-      return NextResponse.json(
-        { error: "Firestore is not initialized" },
-        { status: 500 }
-      );
-    }
-
     const { id } = await params;
     if (!id) {
-      return NextResponse.json({ error: "Task ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Task ID is required" },
+        { status: 400 }
+      );
     }
 
     const tasksCollection = getTasksCollection();
@@ -40,8 +34,13 @@ export async function DELETE(
     );
   } catch (error) {
     console.error("Error deleting task:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to delete task" },
+      {
+        error: "Failed to delete task",
+        details: errorMessage,
+      },
       { status: 500 }
     );
   }
@@ -53,16 +52,12 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!db) {
-      return NextResponse.json(
-        { error: "Firestore is not initialized" },
-        { status: 500 }
-      );
-    }
-
     const { id } = await params;
     if (!id) {
-      return NextResponse.json({ error: "Task ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Task ID is required" },
+        { status: 400 }
+      );
     }
 
     const body = await request.json();
@@ -122,10 +117,14 @@ export async function PUT(
     );
   } catch (error) {
     console.error("Error updating task:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to update task" },
+      {
+        error: "Failed to update task",
+        details: errorMessage,
+      },
       { status: 500 }
     );
   }
 }
-

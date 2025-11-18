@@ -7,29 +7,20 @@ import {
   orderBy,
   Timestamp,
 } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { getDb } from "@/lib/firebase";
 import { TaskStatus } from "@/types/task";
 import { convertFirestoreTimestamp } from "@/lib/helpers";
 
 const USER_ID = "user-123";
 
 function getTasksCollection() {
-  if (!db) {
-    throw new Error("Firestore is not initialized");
-  }
+  const db = getDb();
   return collection(db, "users", USER_ID, "tasks");
 }
 
 // GET - Get all tasks
 export async function GET() {
   try {
-    if (!db) {
-      return NextResponse.json(
-        { error: "Firestore is not initialized" },
-        { status: 500 }
-      );
-    }
-
     const tasksCollection = getTasksCollection();
     const q = query(tasksCollection, orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
@@ -51,20 +42,21 @@ export async function GET() {
     return NextResponse.json({ tasks });
   } catch (error) {
     console.error("Error getting tasks:", error);
-    return NextResponse.json({ error: "Failed to get tasks" }, { status: 500 });
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      {
+        error: "Failed to get tasks",
+        details: errorMessage,
+      },
+      { status: 500 }
+    );
   }
 }
 
 // POST - Create a new task
 export async function POST(request: NextRequest) {
   try {
-    if (!db) {
-      return NextResponse.json(
-        { error: "Firestore is not initialized" },
-        { status: 500 }
-      );
-    }
-
     const body = await request.json();
     const { title } = body;
 
@@ -88,8 +80,13 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Error creating task:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to create task" },
+      {
+        error: "Failed to create task",
+        details: errorMessage,
+      },
       { status: 500 }
     );
   }
