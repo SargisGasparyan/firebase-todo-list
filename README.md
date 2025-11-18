@@ -6,6 +6,8 @@ A personal task manager application built with Next.js, Firebase Firestore, and 
 
 🌐 **Live Application:** [https://firebase-todo-list-22zvk9pfa-sargis-projects-6d981cb8.vercel.app/](https://firebase-todo-list-22zvk9pfa-sargis-projects-6d981cb8.vercel.app/)
 
+📦 **GitHub Repository:** [https://github.com/SargisGasparyan/firebase-todo-list](https://github.com/SargisGasparyan/firebase-todo-list)
+
 The application is deployed on Vercel and uses Firebase Firestore for data persistence.
 
 ## Features
@@ -363,6 +365,19 @@ npm start
 # Run linter
 npm run lint
 ```
+
+## Development Time
+
+⏱️ **Time Spent:** 4 hours
+
+This project was developed from scratch, including:
+
+- Setting up Next.js 16 with App Router
+- Firebase Firestore integration
+- Real-time data synchronization
+- Serverless deployment configuration
+- UI/UX implementation with Tailwind CSS
+- Error handling and edge case management
 
 ## License
 
