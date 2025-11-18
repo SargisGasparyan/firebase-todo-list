@@ -30,8 +30,23 @@ let db: Firestore | null = null;
 
 function initializeFirebase(): { app: FirebaseApp; db: Firestore } {
   if (!isConfigValid()) {
+    const missingVars = [];
+    if (!firebaseConfig.apiKey)
+      missingVars.push("NEXT_PUBLIC_FIREBASE_API_KEY");
+    if (!firebaseConfig.authDomain)
+      missingVars.push("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN");
+    if (!firebaseConfig.projectId)
+      missingVars.push("NEXT_PUBLIC_FIREBASE_PROJECT_ID");
+    if (!firebaseConfig.storageBucket)
+      missingVars.push("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET");
+    if (!firebaseConfig.messagingSenderId)
+      missingVars.push("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID");
+    if (!firebaseConfig.appId) missingVars.push("NEXT_PUBLIC_FIREBASE_APP_ID");
+
     throw new Error(
-      "Firebase configuration is incomplete. Please check your environment variables."
+      `Firebase configuration is incomplete. Missing environment variables: ${missingVars.join(
+        ", "
+      )}`
     );
   }
 
@@ -50,7 +65,9 @@ function initializeFirebase(): { app: FirebaseApp; db: Firestore } {
     return { app, db };
   } catch (error) {
     console.error("Error initializing Firebase:", error);
-    throw error;
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`Failed to initialize Firebase: ${errorMessage}`);
   }
 }
 
@@ -73,8 +90,13 @@ function getDb(): Firestore {
   if (db) {
     return db;
   }
-  const { db: initializedDb } = initializeFirebase();
-  return initializedDb;
+  try {
+    const { db: initializedDb } = initializeFirebase();
+    return initializedDb;
+  } catch (error) {
+    console.error("getDb() error:", error);
+    throw error;
+  }
 }
 
 // Export: For client-side, db is already initialized

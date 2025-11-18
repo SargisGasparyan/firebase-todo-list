@@ -3,6 +3,9 @@ import { deleteDoc, updateDoc, doc, collection } from "firebase/firestore";
 import { getDb } from "@/lib/firebase";
 import { TaskStatus } from "@/types/task";
 
+// Ensure this route uses Node.js runtime
+export const runtime = "nodejs";
+
 const USER_ID = "user-123";
 
 function getTasksCollection() {

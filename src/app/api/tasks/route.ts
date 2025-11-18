@@ -14,9 +14,21 @@ import { convertFirestoreTimestamp } from "@/lib/helpers";
 const USER_ID = "user-123";
 
 function getTasksCollection() {
-  const db = getDb();
-  return collection(db, "users", USER_ID, "tasks");
+  try {
+    const db = getDb();
+    return collection(db, "users", USER_ID, "tasks");
+  } catch (error) {
+    console.error("Error getting Firestore database:", error);
+    throw new Error(
+      `Failed to initialize Firestore: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
 }
+
+// Ensure this route uses Node.js runtime
+export const runtime = "nodejs";
 
 // GET - Get all tasks
 export async function GET() {
@@ -82,10 +94,21 @@ export async function POST(request: NextRequest) {
     console.error("Error creating task:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
+    const errorStack = error instanceof Error ? error.stack : undefined;
+
+    // Log full error details for debugging
+    console.error("Full error details:", {
+      message: errorMessage,
+      stack: errorStack,
+      error,
+    });
+
     return NextResponse.json(
       {
         error: "Failed to create task",
         details: errorMessage,
+        // Only include stack in development
+        ...(process.env.NODE_ENV === "development" && { stack: errorStack }),
       },
       { status: 500 }
     );

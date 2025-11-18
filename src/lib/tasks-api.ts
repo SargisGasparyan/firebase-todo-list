@@ -12,7 +12,11 @@ export async function createTask(title: string): Promise<string> {
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || "Failed to create task");
+    const errorMessage = error.details
+      ? `${error.error}: ${error.details}`
+      : error.error || "Failed to create task";
+    console.error("API Error:", error);
+    throw new Error(errorMessage);
   }
 
   const data = await response.json();

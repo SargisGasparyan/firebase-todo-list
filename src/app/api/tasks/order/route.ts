@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { doc, writeBatch, collection } from "firebase/firestore";
 import { getDb } from "@/lib/firebase";
 
+// Ensure this route uses Node.js runtime
+export const runtime = "nodejs";
+
 const USER_ID = "user-123";
 
 function getTasksCollection() {
