@@ -4,7 +4,9 @@ A personal task manager application built with Next.js, Firebase Firestore, and 
 
 ## Live Demo
 
-[Link to live demo will be added after deployment to Vercel]
+🌐 **Live Application:** [https://firebase-todo-list-22zvk9pfa-sargis-projects-6d981cb8.vercel.app/](https://firebase-todo-list-22zvk9pfa-sargis-projects-6d981cb8.vercel.app/)
+
+The application is deployed on Vercel and uses Firebase Firestore for data persistence.
 
 ## Features
 
@@ -35,74 +37,124 @@ A personal task manager application built with Next.js, Firebase Firestore, and 
 - **TypeScript** - Type-safe JavaScript
 - **Tailwind CSS** - Utility-first CSS framework for styling
 
-## Setup Instructions
+## Installation Instructions
 
 ### Prerequisites
 
-- Node.js 18+ installed
-- A Firebase project with Firestore enabled
-- npm or yarn package manager
+- **Node.js 18+** installed
+- **npm** or **yarn** package manager
+- **Firebase account** with a project created
+- **Firestore Database** enabled in your Firebase project
 
-### Installation
+### Step-by-Step Setup
 
-1. **Clone the repository**
+#### 1. Clone the Repository
 
-   ```bash
-   git clone <repository-url>
-   cd firebase-tasks
-   ```
+```bash
+git clone <repository-url>
+cd firebase-tasks
+```
 
-2. **Install dependencies**
+#### 2. Install Dependencies
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-3. **Set up environment variables**
+#### 3. Get Firebase Configuration
 
-   Create a `.env.local` file in the root directory and add your Firebase configuration:
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project (or create a new one)
+3. Click the gear icon ⚙️ → **Project Settings**
+4. Scroll down to **Your apps** section
+5. Click on the **Web app** icon (`</>`) or create a new web app
+6. Copy the Firebase configuration object
 
-   ```env
-   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-   NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-   ```
+#### 4. Set Up Environment Variables
 
-   You can find these values in your Firebase project settings under "Your apps" → Web app config.
+Create a `.env.local` file in the root directory:
 
-4. **Set up Firestore**
+```bash
+touch .env.local
+```
 
-   - Go to Firebase Console → Firestore Database
-   - Create a database in test mode (or production mode with appropriate security rules)
-   - The app will automatically create the collection structure: `users/user-123/tasks`
+Add your Firebase configuration to `.env.local`:
 
-5. **Run the development server**
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key_here
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
 
-   ```bash
-   npm run dev
-   ```
+**Where to find these values:**
 
-6. **Open your browser**
+- In Firebase Console → Project Settings → Your apps → Web app config
+- They are displayed in the `firebaseConfig` object
 
-   Navigate to [http://localhost:3000](http://localhost:3000)
+#### 5. Set Up Firestore Database
 
-## Environment Variables
+1. Go to Firebase Console → **Firestore Database**
+2. Click **Create database**
+3. Choose **Start in test mode** (for development) or **Production mode** with security rules
+4. Select a location for your database
+5. The app will automatically create the collection structure: `users/user-123/tasks`
 
-The following environment variables are required in `.env.local`:
+#### 6. Run the Development Server
 
-| Variable                                   | Description                  |
-| ------------------------------------------ | ---------------------------- |
-| `NEXT_PUBLIC_FIREBASE_API_KEY`             | Firebase API key             |
-| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`         | Firebase auth domain         |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID`          | Firebase project ID          |
-| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`      | Firebase storage bucket      |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase messaging sender ID |
-| `NEXT_PUBLIC_FIREBASE_APP_ID`              | Firebase app ID              |
+```bash
+npm run dev
+```
 
-**Note:** All variables are prefixed with `NEXT_PUBLIC_` to make them available in the browser.
+#### 7. Open the Application
+
+Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Environment Variables (Firebase Config)
+
+### Required Variables
+
+The following environment variables are **required** for the application to work. All variables must be prefixed with `NEXT_PUBLIC_` to be accessible in both client and server-side code.
+
+| Variable                                   | Description                         | Example                           |
+| ------------------------------------------ | ----------------------------------- | --------------------------------- |
+| `NEXT_PUBLIC_FIREBASE_API_KEY`             | Firebase API key for authentication | `AIzaSyC...`                      |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`         | Firebase authentication domain      | `your-project.firebaseapp.com`    |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID`          | Your Firebase project ID            | `your-project-id`                 |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`      | Firebase Cloud Storage bucket URL   | `your-project.appspot.com`        |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase Cloud Messaging sender ID  | `123456789012`                    |
+| `NEXT_PUBLIC_FIREBASE_APP_ID`              | Firebase app ID                     | `1:123456789012:web:abcdef123456` |
+
+### Local Development
+
+Create a `.env.local` file in the root directory:
+
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
+
+### Vercel Deployment
+
+When deploying to Vercel:
+
+1. Go to **Vercel Dashboard** → Your Project → **Settings** → **Environment Variables**
+2. Add each variable with the exact name (including `NEXT_PUBLIC_` prefix)
+3. Select environments: **Production** and **Preview**
+4. Click **Save**
+5. **Redeploy** your application
+
+**Important:**
+
+- All variables must start with `NEXT_PUBLIC_` to be available in both browser and server
+- After adding variables in Vercel, you must redeploy for changes to take effect
+- Missing variables will cause initialization errors
 
 ## Project Structure
 
@@ -129,48 +181,97 @@ firebase-tasks/
 └── README.md
 ```
 
-## Technical Decisions
+## Technical Decisions & Solutions
 
 ### 1. **Real-time Updates with Firestore**
 
-- Used `onSnapshot` for real-time synchronization
-- Tasks update automatically across all clients without manual refresh
+- **Solution:** Used `onSnapshot` listener for real-time synchronization
+- **Benefit:** Tasks update automatically across all clients without manual refresh
+- **Implementation:** Client-side component subscribes to Firestore changes and updates UI reactively
 
-### 2. **Component Architecture**
+### 2. **Serverless Architecture (Vercel)**
 
-- Separated concerns into focused components
-- Used client components (`"use client"`) for interactive features
-- Server components for static content
+- **Challenge:** Firebase Client SDK can hang when initialized at module load in serverless functions
+- **Solution:** Implemented lazy initialization pattern for Firebase
+  - Client-side: Firebase initializes immediately on page load
+  - Server-side: Firebase initializes on-demand when API routes are called
+  - Uses `getDb()` function for lazy initialization in API routes
+- **Benefit:** Prevents infinite pending requests and ensures reliable serverless execution
+- **Configuration:** Added `serverExternalPackages: ["firebase"]` in `next.config.ts` for proper bundling
 
-### 3. **Data Modeling**
+### 3. **Component Architecture**
 
-- Tasks stored in subcollection: `users/{userId}/tasks`
-- Each task document contains: `id`, `title`, `status`, `createdAt`, `important`, `order`
-- Used hardcoded user ID (`user-123`) as per requirements (no authentication)
+- **Pattern:** Separated concerns into focused, reusable components
+- **Client Components:** Used `"use client"` directive for interactive features (TaskManager, TaskList, TaskItem)
+- **Server Components:** Used for static content and layouts
+- **Structure:**
+  - `TaskManager` - Main container with state management
+  - `TaskList` - List rendering and drag-drop logic
+  - `TaskItem` - Individual task UI and interactions
+  - `AddTaskForm` - Form handling and validation
 
-### 4. **TypeScript Usage**
+### 4. **Data Modeling**
 
-- Strict typing throughout the application
-- Defined interfaces for all data structures
-- No `any` types used
+- **Structure:** Tasks stored in subcollection: `users/{userId}/tasks`
+- **Schema:** Each task document contains:
+  - `id` - Document ID (auto-generated)
+  - `title` - Task title (string)
+  - `status` - Task status ("todo" | "done")
+  - `createdAt` - Firestore Timestamp
+  - `important` - Boolean flag for important tasks
+  - `order` - Number for drag-drop ordering
+- **User Management:** Hardcoded user ID (`user-123`) as per requirements (no authentication)
 
-### 5. **Error Handling**
+### 5. **API Routes & Error Handling**
 
-- Try-catch blocks in all async operations
-- User-friendly error messages
-- Loading states for better UX
+- **Pattern:** RESTful API routes using Next.js App Router
+- **Routes:**
+  - `GET /api/tasks` - Fetch all tasks
+  - `POST /api/tasks` - Create new task
+  - `PUT /api/tasks/[id]` - Update task (status, title, importance)
+  - `DELETE /api/tasks/[id]` - Delete task
+  - `POST /api/tasks/order` - Batch update task order
+- **Error Handling:**
+  - Comprehensive try-catch blocks in all async operations
+  - Detailed error messages with stack traces (development only)
+  - User-friendly error messages in UI
+  - Proper HTTP status codes (400, 500, etc.)
 
-### 6. **Responsive Design**
+### 6. **TypeScript Usage**
 
-- Mobile-first approach with Tailwind CSS
-- Breakpoints for sm, md, lg screens
-- Touch-friendly interactions on mobile
+- **Approach:** Strict typing throughout the application
+- **Benefits:**
+  - Type safety at compile time
+  - Better IDE autocomplete and IntelliSense
+  - Easier refactoring and maintenance
+- **Standards:** Defined interfaces for all data structures, no `any` types used
 
-### 7. **Drag and Drop**
+### 7. **Responsive Design**
 
-- HTML5 Drag and Drop API (no external libraries)
-- Visual feedback during dragging
-- Batch updates for efficient reordering
+- **Framework:** Tailwind CSS utility-first approach
+- **Strategy:** Mobile-first responsive design
+- **Breakpoints:** Optimized for sm, md, lg screens
+- **UX:** Touch-friendly interactions on mobile devices
+
+### 8. **Drag and Drop**
+
+- **Implementation:** HTML5 Drag and Drop API (no external libraries)
+- **Features:**
+  - Visual feedback during dragging
+  - Batch updates for efficient reordering
+  - Persists order to Firestore via batch write
+
+### 9. **Content Security Policy (CSP)**
+
+- **Challenge:** Firebase SDK requires `unsafe-eval` for some functionality
+- **Solution:** Configured CSP headers in `next.config.ts`
+- **Configuration:** Allows Firebase domains and WebSocket connections while maintaining security
+
+### 10. **Runtime Configuration**
+
+- **API Routes:** Explicitly set to use Node.js runtime (`export const runtime = "nodejs"`)
+- **Reason:** Ensures Firebase SDK works correctly in Vercel serverless functions
+- **Compatibility:** Prevents edge runtime issues with Firebase initialization
 
 ## Usage
 
@@ -214,12 +315,38 @@ firebase-tasks/
 
 ### Deploy to Vercel
 
-1. Push your code to GitHub
-2. Import the repository in Vercel
-3. Add environment variables in Vercel project settings
-4. Deploy
+1. **Push your code to GitHub**
 
-The app will be automatically deployed and available at a Vercel URL.
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
+
+2. **Import repository in Vercel**
+
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click **Add New Project**
+   - Import your GitHub repository
+
+3. **Configure environment variables**
+
+   - In Vercel project settings, go to **Environment Variables**
+   - Add all 6 Firebase variables (see [Environment Variables](#environment-variables-firebase-config) section)
+   - Select **Production** and **Preview** environments
+   - Click **Save**
+
+4. **Deploy**
+
+   - Vercel will automatically detect Next.js and deploy
+   - Or manually trigger deployment from the dashboard
+
+5. **Verify deployment**
+   - Check the deployment logs for any errors
+   - Test the live application
+   - Verify Firebase connection is working
+
+**Note:** After adding environment variables, you must redeploy for them to take effect.
 
 ## Development
 
