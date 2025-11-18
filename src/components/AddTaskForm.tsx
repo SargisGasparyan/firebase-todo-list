@@ -28,7 +28,10 @@ export default function AddTaskForm({ onTaskAdded }: AddTaskFormProps) {
       setTitle("");
       onTaskAdded();
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to create task. Please try again.";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Failed to create task. Please try again.";
       setError(errorMessage);
       console.error("Error creating task:", err);
     } finally {

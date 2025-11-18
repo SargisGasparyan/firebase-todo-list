@@ -21,10 +21,8 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  // Ensure API routes use Node.js runtime for Firebase compatibility
-  experimental: {
-    serverComponentsExternalPackages: ["firebase"],
-  },
+  // Ensure Firebase package is externalized for serverless compatibility
+  serverExternalPackages: ["firebase"],
 };
 
 export default nextConfig;
